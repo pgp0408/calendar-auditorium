@@ -187,10 +187,10 @@ document.addEventListener("DOMContentLoaded", function () {
     return v ? v.toString().slice(0, 5) : "Non précisée";
   }
 
-  function isValidated(v) {
-    const s = norm(v);
-    return s.includes("reservation acceptee") || s.includes("acceptee") || s.includes("confirmee") || s.includes("validee") || s === "oui";
-  }
+function isValidated(v) {
+  const s = norm(v);
+  return s === "reservation acceptee";
+}
 
   function getSpaces(v) {
     const s = norm(v);
