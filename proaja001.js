@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!root) return;
 
   // Remplace cette URL par l’URL CSV publiée du nouveau Google Sheet
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/1MR5rDc6qAzLHHWsGwXRPnoL92oxFJsN2tUjMi942RlU/";
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQasSMsDEytgSX9dgxLRx1KIOYtsGDNx4jBD_v25_57jbR9n00LHnr9qFMXCiv6oN1OYwR-EEaQ_cbl/pub?output=csv";
 
   root.innerHTML = `
     <style>
