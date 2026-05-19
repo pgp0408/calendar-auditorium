@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!root) return;
 
   const CSV_URL =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvqtHB3cJldM-RfnS6poGMa_wwbpjFDZp6RDEgGTAaHlsqMuuuPc6GgQGPIsC1EbwlnDTdgZtXeZnP/pubhtml";
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQvqtHB3cJldM-RfnS6poGMa_wwbpjFDZp6RDEgGTAaHlsqMuuuPc6GgQGPIsC1EbwlnDTdgZtXeZnP/pub?output=csv";
 
   const START_DATE = "2026-06-15";
   const END_DATE = "2026-06-21";
