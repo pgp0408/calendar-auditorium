@@ -557,6 +557,32 @@ document.addEventListener("DOMContentLoaded", function () {
     return day ? day.label : iso;
   }
 
+function formatTime(v) {
+  if (!v) return "Non précisée";
+
+  const txt = v.toString().trim();
+
+  // Cas déjà propre : 09:00
+  if (/^\d{1,2}:\d{2}$/.test(txt)) {
+    const parts = txt.split(":");
+    return String(parts[0]).padStart(2, "0") + ":" + parts[1];
+  }
+
+  // Cas Google Sheets parfois : 9:00:00
+  if (/^\d{1,2}:\d{2}:\d{2}$/.test(txt)) {
+    const parts = txt.split(":");
+    return String(parts[0]).padStart(2, "0") + ":" + parts[1];
+  }
+
+  // Cas avec h : 9h00 / 09h00
+  if (/^\d{1,2}h\d{2}$/.test(txt.toLowerCase())) {
+    const parts = txt.toLowerCase().split("h");
+    return String(parts[0]).padStart(2, "0") + ":" + parts[1];
+  }
+
+  return txt.slice(0, 5);
+}
+  
   function roomInfo(v) {
     const s = norm(v);
 
