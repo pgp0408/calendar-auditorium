@@ -1185,25 +1185,53 @@ function parseCSV(text) {
     return map;
   }
 
-  function mergeReservations(slots, reservations) {
-    return slots.map(slot => {
-      const r = reservations[slot.id] || { confirmed: 0, pending: 0, refused: 0 };
-      const remaining = Math.max(0, slot.capacity - r.confirmed);
-      return {
-        ...slot,
-        confirmed: r.confirmed,
-        pending: r.pending,
-        remaining,
-        full: remaining <= 0
-      };
-    });
+ function getReservationsForSlot(slot, reservations) {
+  // Cas normal : correspondance exacte.
+  if (reservations[slot.id]) {
+    return reservations[slot.id];
   }
 
-  function slotStatus(slot) {
-    if (slot.full) return { cls: "full", text: "Complet" };
-    if (slot.remaining <= 8) return { cls: "low", text: "Presque complet" };
-    return { cls: "available", text: "Disponible" };
-  }
+  // Cas de secours :
+  // si le titre sluggé ne correspond pas parfaitement,
+  // on rapproche quand même par date + heure début + heure fin + salle.
+  const prefix = [
+    slot.dateIso,
+    slot.start.replace(":", ""),
+    slot.end.replace(":", ""),
+    slot.roomKey
+  ].join("|") + "|";
+
+  const total = {
+    confirmed: 0,
+    pending: 0,
+    refused: 0
+  };
+
+  Object.keys(reservations).forEach(id => {
+    if (id.indexOf(prefix) === 0) {
+      total.confirmed += reservations[id].confirmed || 0;
+      total.pending += reservations[id].pending || 0;
+      total.refused += reservations[id].refused || 0;
+    }
+  });
+
+  return total;
+}
+
+function mergeReservations(slots, reservations) {
+  return slots.map(slot => {
+    const r = getReservationsForSlot(slot, reservations);
+    const remaining = Math.max(0, slot.capacity - r.confirmed);
+
+    return {
+      ...slot,
+      confirmed: r.confirmed,
+      pending: r.pending,
+      remaining,
+      full: remaining <= 0
+    };
+  });
+}
 
   function loadCart() {
     try {
