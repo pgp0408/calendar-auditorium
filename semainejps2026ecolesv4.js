@@ -1776,6 +1776,21 @@ function mergeReservations(slots, reservations) {
       const demandesRows = parseCSV(demandesText);
       const slots = buildSlotsFromPropositions(propositionsRows);
       const reservations = buildReservationMap(demandesRows);
+console.log("JPS DEBUG demandesRows", demandesRows);
+console.log("JPS DEBUG reservations", reservations);
+
+const debugBox = document.createElement("pre");
+debugBox.style.cssText =
+  "max-width:1200px;margin:20px auto;padding:12px;border:2px solid #dc2626;background:#fff1f2;color:#7f1d1d;white-space:pre-wrap;font:12px monospace;";
+
+debugBox.textContent =
+  "DEBUG JPS V4\n\n" +
+  "Nombre de lignes demandes lues : " + demandesRows.length + "\n\n" +
+  "En-têtes demandes :\n" + JSON.stringify(demandesRows[0], null, 2) + "\n\n" +
+  "Réservations calculées :\n" + JSON.stringify(reservations, null, 2);
+
+root.appendChild(debugBox);
+      
 
       allSlots = mergeReservations(slots, reservations);
 
