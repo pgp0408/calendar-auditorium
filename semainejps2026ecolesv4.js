@@ -810,11 +810,43 @@ const DEMANDES_CSV =
     return res;
   }
 
-  function parseCSV(text) {
-    const clean = text.replace(/\r/g, "").trim();
-    if (!clean) return [];
-    return clean.split("\n").map(parseCSVLine);
+function parseCSV(text) {
+  const clean = String(text || "").replace(/\r/g, "").trim();
+  if (!clean) return [];
+
+  const rows = [];
+  let row = [];
+  let cur = "";
+  let quoted = false;
+
+  for (let i = 0; i < clean.length; i++) {
+    const ch = clean[i];
+    const next = clean[i + 1];
+
+    if (ch === '"') {
+      if (quoted && next === '"') {
+        cur += '"';
+        i++;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (ch === "," && !quoted) {
+      row.push(cur);
+      cur = "";
+    } else if (ch === "\n" && !quoted) {
+      row.push(cur);
+      rows.push(row);
+      row = [];
+      cur = "";
+    } else {
+      cur += ch;
+    }
   }
+
+  row.push(cur);
+  rows.push(row);
+  return rows;
+}
 
   function findCol(headers, possibilities) {
     const hs = headers.map(norm);
